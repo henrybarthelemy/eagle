@@ -1,6 +1,16 @@
-# dune init proj eagle
+# dune exec eagle --profile release
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Shared cache location: /Users/henrybarthelemy/.cache/dune/db
 # Workspace root: /Users/henrybarthelemy/eagle
 # Auto-detected concurrency: 8
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Release
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /opt/homebrew/bin/ocamlc.opt -config > /var/folders/4f/gy7npp895b30q_xtx4yc6hg40000gn/T/dune_52f237_output

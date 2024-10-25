@@ -1,4 +1,6 @@
 (executable
  (public_name eagle)
  (name main)
- (libraries eagle))
+ (libraries eagle ppx_deriving menhirLib sedlex)
+ (preprocess (pps ppx_deriving.show))
+ (flags (:standard -w -32)))
