@@ -1,0 +1,6 @@
+# dune init proj eagle
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Shared cache location: /Users/henrybarthelemy/.cache/dune/db
+# Workspace root: /Users/henrybarthelemy/eagle
+# Auto-detected concurrency: 8
