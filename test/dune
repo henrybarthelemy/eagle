@@ -1,2 +1,6 @@
 (test
- (name test_eagle))
+ (name test_eagle)
+ (libraries eagle ppx_deriving menhirLib sedlex)
+ (preprocess (pps ppx_deriving.show sedlex.ppx))
+ (flags (:standard -rectypes)))
+

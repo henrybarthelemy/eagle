@@ -12,11 +12,13 @@
 %%
 
 let program :=
-  | instruction = instruction; NEW_LINE; roi = program; EOF; { Instructions(instruction, roi) } 
-  | instruction = instruction; NEW_LINE; roi = program; { Instructions(instruction, roi) } 
-  | instruction = instruction; NEW_LINE; EOF; { Instructions(instruction, EmptyProgram) } 
+  | instruction = instruction; new_lines; roi = program; EOF; { Instructions(instruction, roi) } 
   | instruction = instruction; EOF; { Instructions(instruction, EmptyProgram) } 
   | EOF; { EmptyProgram }
+
+let new_lines := 
+  | NEW_LINE
+  | NEW_LINE; new_lines
 
 let instruction :=
   | declaration = declaration; { Declaration(declaration) }  
