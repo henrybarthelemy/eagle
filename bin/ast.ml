@@ -1,5 +1,6 @@
 type declaration = 
 | LocalityDecl of string
+| NameDecl of string
 [@@deriving show { with_path = false }]
 
 type expr =
@@ -13,5 +14,5 @@ type instruction =
 
 type program =
 | EmptyProgram
-| Instructions of instruction * program
+| Instruction of instruction * program
 [@@deriving show { with_path = false }]

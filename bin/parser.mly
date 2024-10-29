@@ -12,8 +12,8 @@
 %%
 
 let program :=
-  | instruction = instruction; new_lines; roi = program; EOF; { Instructions(instruction, roi) } 
-  | instruction = instruction; EOF; { Instructions(instruction, EmptyProgram) } 
+  | instruction = instruction; new_lines; roi = program; EOF; { Instruction(instruction, roi) } 
+  | instruction = instruction; EOF; { Instruction(instruction, EmptyProgram) } 
   | EOF; { EmptyProgram }
 
 let new_lines := 
