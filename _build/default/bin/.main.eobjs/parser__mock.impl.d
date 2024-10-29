@@ -1,1 +1,1 @@
-bin/parser__mock.ml.pp.mock: Expr Lexing Typ
+bin/parser__mock.ml.pp.mock: Ast Lexing

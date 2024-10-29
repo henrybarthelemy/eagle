@@ -2,6 +2,7 @@
 (* The type of tokens. *)
 
 type token = 
+  | NEW_LINE
   | LOCALITY
   | IDENT of (string)
   | EOF
@@ -12,4 +13,4 @@ exception Error
 
 (* The monolithic API. *)
 
-val expr_opt: (Lexing.lexbuf -> token) -> Lexing.lexbuf -> (Expr.expr option)
+val program: (Lexing.lexbuf -> token) -> Lexing.lexbuf -> (Ast.program)

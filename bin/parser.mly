@@ -1,22 +1,32 @@
-%{ open Typ
-   open Expr %}
+%{
+  open Ast 
+%}
 
 %token <string> IDENT
 %token LOCALITY
-
+%token NEW_LINE
 %token EOF
 
-%start <Expr.expr option> expr_opt
+%start <Ast.program> program
 
 %%
 
-let expr_opt :=
-  | EOF; { None }
-  | e = expr; EOF; { Some e }
+let program :=
+  | instruction = instruction; NEW_LINE; roi = program; EOF; { Instructions(instruction, roi) } 
+  | instruction = instruction; NEW_LINE; roi = program; { Instructions(instruction, roi) } 
+  | instruction = instruction; NEW_LINE; EOF; { Instructions(instruction, EmptyProgram) } 
+  | instruction = instruction; EOF; { Instructions(instruction, EmptyProgram) } 
+  | EOF; { EmptyProgram }
 
-let terminal ==
-  | LOCALITY; i = IDENT; { DeclerationExpr (LocalityDecl i) }
-  | i = IDENT; { Variable i }
+let instruction :=
+  | declaration = declaration; { Declaration(declaration) }  
+  | expr = expr; { Expression(expr) }          
+
+let declaration :=
+  | LOCALITY; i = IDENT; { LocalityDecl(i) }  
 
 let expr :=
-  | terminal
+  | terminal = terminal; { terminal }                    
+
+let terminal :=
+  | i = IDENT; { Variable(i) }              

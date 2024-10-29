@@ -1,0 +1,51 @@
+
+** Conflict (shift/reduce) in state 10.
+** Token involved: EOF
+** This state is reached from program after reading:
+
+instruction NEW_LINE instruction NEW_LINE program
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+program 
+(?)
+
+** In state 10, looking ahead at EOF, shifting is permitted
+** because of the following sub-derivation:
+
+instruction NEW_LINE program EOF 
+                     instruction NEW_LINE program . EOF 
+
+** In state 10, looking ahead at EOF, reducing production
+** program -> instruction NEW_LINE program
+** is permitted because of the following sub-derivation:
+
+instruction NEW_LINE program EOF // lookahead token appears
+                     instruction NEW_LINE program . 
+
+** Conflict (reduce/reduce) in state 9.
+** Tokens involved: EOF #
+** The following explanations concentrate on token #.
+** This state is reached from program after reading:
+
+instruction NEW_LINE EOF
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+program // lookahead token is inherited
+(?)
+
+** In state 9, looking ahead at #, reducing production
+** program -> instruction NEW_LINE EOF
+** is permitted because of the following sub-derivation:
+
+instruction NEW_LINE EOF . 
+
+** In state 9, looking ahead at #, reducing production
+** program -> EOF
+** is permitted because of the following sub-derivation:
+
+instruction NEW_LINE program // lookahead token is inherited
+                     EOF . 

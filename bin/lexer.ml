@@ -16,14 +16,16 @@ let ident = [%sedlex.regexp? lower_alpha, Star (lower_alpha | number | '_')]
 let int = [%sedlex.regexp? Plus number]
 
 let locality = [%sedlex.regexp? "locality"]
-
 let rec tokenizer buf =
   match%sedlex buf with
   | whitespace -> tokenizer buf
+  | new_line -> NEW_LINE
   | locality -> LOCALITY
   | ident -> IDENT (lexeme buf)
   | eof -> EOF
-  | _ -> assert false
+  | _ -> 
+    Printf.eprintf "Error: unexpected token";
+    raise Invalid_token
 
 let provider buf () =
   let token = tokenizer buf in

@@ -1,0 +1,38 @@
+# OCaml build artifacts
+*.cmo
+*.cmi
+*.cmx
+*.o
+*.a
+*.cmx
+*.cmt
+*.cmi
+*.o
+*.byte
+*.native
+*.dSYM/
+*.exe
+
+# Dune build directory
+/_build/
+*.install
+
+# OPAM files
+*.opam
+
+# Editor files
+*~                      # Backup files from various editors
+*.swp                   # Vim swap files
+*.swo                   # Vim swap files
+.DS_Store               # macOS folder attributes
+*.log                   # Log files
+
+# OCamlformat
+.ocamlformat
+
+# Merlin
+.merlin
+
+# Other files
+.idea/                 # JetBrains IDEs
+.vscode/               # VSCode settings
