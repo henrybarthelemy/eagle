@@ -13,7 +13,7 @@ let comma = [%sedlex.regexp? ',']
 
 let name = [%sedlex.regexp? "name"]
 
-let name_type = [%sedlex.regexp? "nonce"]
+let nonce = [%sedlex.regexp? "nonce"]
 
 let at = [%sedlex.regexp? '@']
 
@@ -30,14 +30,6 @@ let int = [%sedlex.regexp? Plus number]
 let locality = [%sedlex.regexp? "locality"]
 
 
-let match_to_name_type x =
-  match x with 
-  | "nonce" -> Nonce
-  | _ -> 
-    let error_message = "Unable to find type " ^ x in
-    print_endline error_message;
-    raise Invalid_name_type 
-
 let rec tokenizer buf =
   match%sedlex buf with
   | whitespace -> tokenizer buf
@@ -47,8 +39,7 @@ let rec tokenizer buf =
   | comma -> COMMA
   | at -> AT
   | name -> NAME
-  | name_type -> let name_typ = match_to_name_type (lexeme buf) in
-  NAME_TYPE name_typ
+  | nonce -> NONCE
   | ident -> IDENT (lexeme buf)
   | eof -> EOF
   | _ -> 

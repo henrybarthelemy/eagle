@@ -3,13 +3,12 @@
 %}
 
 %token <string> IDENT
-%token <Ast.nametyp> NAME_TYPE
 
 %token NAME
 %token COLON
 %token AT
 %token COMMA
-
+%token NONCE
 %token LOCALITY
 %token NEW_LINE
 %token EOF
@@ -34,7 +33,7 @@ let instruction :=
 
 let declaration :=
   | LOCALITY; i = IDENT; { LocalityDecl(Locality(i)) }  
-  | NAME; i = IDENT; COLON; nt = NAME_TYPE; AT; lis = localities; { NameDecl(Name(i, Nonce, lis))}
+  | NAME; i = IDENT; COLON; NONCE; AT; lis = localities; { NameDecl(Name(i, Nonce, lis))}
 
 let localities := 
   | li = IDENT; { [Locality(li)] }
