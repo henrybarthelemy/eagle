@@ -1,8 +1,0 @@
-type token = NEW_LINE | LOCALITY | IDENT of string | EOF
-val menhir_begin_marker : int
-val xv_terminal : Ast.expr
-val xv_program : Ast.program
-val xv_instruction : Ast.instruction
-val xv_expr : Ast.expr
-val xv_declaration : Ast.declaration
-val menhir_end_marker : int
