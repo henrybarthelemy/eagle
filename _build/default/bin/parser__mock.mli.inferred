@@ -1,0 +1,6 @@
+type token = LOCALITY | IDENT of string | EOF
+val menhir_begin_marker : int
+val xv_terminal : Expr.expr
+val xv_expr_opt : Expr.expr option
+val xv_expr : Expr.expr
+val menhir_end_marker : int

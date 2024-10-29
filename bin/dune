@@ -2,5 +2,14 @@
  (public_name eagle)
  (name main)
  (libraries eagle ppx_deriving menhirLib sedlex)
- (preprocess (pps ppx_deriving.show))
- (flags (:standard -w -32)))
+ (preprocess (pps ppx_deriving.show sedlex.ppx))
+ (flags (:standard -rectypes)))
+
+(menhir
+ (modules parser))
+
+ (rule
+  (alias runeagle)
+  (deps ./main.exe)
+  (action
+   (run ./main.exe)))
