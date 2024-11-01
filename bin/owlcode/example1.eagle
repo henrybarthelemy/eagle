@@ -1,0 +1,22 @@
+name x
+name k_data 
+name psk
+
+def alice_main () = 
+    let c = enc(get(psk), get(k_data)) in
+    output c
+    input i in 
+    let res = dec(get(k_data), ret(i)) in 
+    case res {
+     | Some j => SomeResult(j)
+     | None => NoResult()
+    }
+    
+def bob_main () =
+    input i in 
+    case dec(get(psk), ret(i))  {
+     | Some k => 
+        let c = enc(ret(k), get(x)) in
+        output c 
+     | None => ()
+    }
