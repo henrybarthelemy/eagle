@@ -5,7 +5,7 @@ name psk
 def alice_main () =     
     let c = enc(get(psk), get(k_data)) in
     output ret(c)
-    input i
+    input i in
     let res = dec(get(k_data), i) in 
     case res {
      | Some j => SomeResult(j)

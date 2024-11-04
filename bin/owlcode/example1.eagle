@@ -2,5 +2,8 @@ name x
 name k_data 
 name psk
 
-def alice_main () = 
-    input asdasd
+def alice_main () =     
+    let c = enc(get(psk), get(k_data)) in
+    output ret(c)
+    input i in
+    let res = dec(get(k_data), i) in 

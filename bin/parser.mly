@@ -13,8 +13,16 @@
 %token EQUALS
 %token DEF
 %token NEW_LINE
-%token EOF
+%token IN
+%token RET
+%token GET
+%token OUTPUT
+%token DEC
+%token ENC
+%token LET
 
+
+%token EOF
 %start <Ast.program> program
 
 %%
@@ -61,7 +69,37 @@ let body :=
     }     
 
 let expr := 
-  | INPUT; i = IDENT; { 
+  | INPUT; i = IDENT; IN; body = body; { 
       debug ("Parsed: input expression with identifier " ^ i);
-      Input(i) 
-    }            
+      Input(i, body) 
+    }
+  | RET; LPAREN; aterm = aterm; RPAREN; {
+    debug ("Parsed: retreieve expression");
+    Ret(aterm)
+    }      
+  | OUTPUT; expr = expr; { 
+    debug ("Parsed: output expression");
+    Output(expr) 
+    }
+  | ENC; LPAREN; aterm1 = aterm; COMMA; aterm2 = aterm; RPAREN; {
+    debug ("Parsed: encryption with two aterms");
+    Enc(aterm1, aterm2)
+    }
+  | DEC; LPAREN; aterm1 = aterm; COMMA; aterm2 = aterm; RPAREN; {
+    debug ("Parsed: encryption with two aterms");
+    Dec(aterm1, aterm2)
+    }
+  | LET; i = IDENT; EQUALS; eq_expr = expr; IN; body = body; {
+      debug ("Parsed: let with identity " ^ i);
+      Let(i, eq_expr, body)
+  }
+
+let aterm := 
+  | GET; LPAREN; n = IDENT; RPAREN; { 
+    debug ("Parsed a get with name " ^ n);
+    Get(n) 
+    }
+  | i = IDENT; { 
+    debug ("Parsed a retrieve with param " ^ i);
+    RetVariable(i) 
+    }     

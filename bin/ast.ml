@@ -15,10 +15,10 @@ type aterm =
 type expr = 
   | Ret of aterm
   | Output of expr
-  | Input of string
+  | Input of string * (expr list)
   | Enc of aterm * aterm
   | Dec of aterm * aterm
-  | Let of string * expr * expr 
+  | Let of string * expr * (expr list) 
   | Match of aterm * (expr * expr) list
 [@@deriving show { with_path = false }]
 

@@ -1,5 +1,3 @@
-module Context = Map.Make (String)
-
 open Parser
 open Lexer
 open Ast

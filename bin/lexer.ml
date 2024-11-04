@@ -29,7 +29,15 @@ let equals =  [%sedlex.regexp? '=']
 let def = [%sedlex.regexp? "def"]
 
 let input = [%sedlex.regexp? "input"]
+let in_regex = [%sedlex.regexp? "in"]
 
+let in_regex = [%sedlex.regexp? "in"]
+let ret = [%sedlex.regexp? "ret"]
+let get = [%sedlex.regexp? "get"]
+let output = [%sedlex.regexp? "output"]
+let dec = [%sedlex.regexp? "dec"]
+let enc = [%sedlex.regexp? "enc"]
+let let_regex = [%sedlex.regexp? "let"]
 
 let rec tokenizer buf =
   match%sedlex buf with
@@ -40,8 +48,15 @@ let rec tokenizer buf =
   | rparen -> RPAREN
   | equals -> EQUALS
   | input -> INPUT
+  | let_regex -> LET
   | comma -> COMMA
   | name -> NAME
+  | in_regex -> IN
+  | ret -> RET
+  | get -> GET
+  | output -> OUTPUT
+  | dec -> DEC
+  | enc -> ENC
   | nonce -> NONCE
   | ident -> IDENT (lexeme buf)
   | eof -> EOF
