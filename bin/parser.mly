@@ -1,46 +1,67 @@
 %{
-  open Ast 
+  open Ast
+  let debug msg = () (* print_endline msg *)
 %}
 
 %token <string> IDENT
-
 %token NAME
-%token COLON
-%token AT
 %token COMMA
 %token NONCE
-%token LOCALITY
+%token LPAREN
+%token RPAREN
+%token INPUT
+%token EQUALS
+%token DEF
 %token NEW_LINE
 %token EOF
-
 
 %start <Ast.program> program
 
 %%
 
 let program :=
-  | instruction = instruction; new_lines; roi = program; EOF; { Instruction(instruction, roi) } 
-  | instruction = instruction; EOF; { Instruction(instruction, EmptyProgram) } 
-  | EOF; { EmptyProgram }
+  | instructions = instructions; { 
+      debug "Parsed: program";
+      Program(instructions) 
+  } 
+
+let instructions := 
+  | instruction = instruction; new_lines; roi = instructions; { instruction:: roi }
+  | instruction = instruction; EOF; { [instruction] }
+  | EOF; { [] }
 
 let new_lines := 
-  | NEW_LINE
-  | NEW_LINE; new_lines
+  | NEW_LINE; { debug "Parsed: new line" }
+  | NEW_LINE; new_lines; { debug "Parsed: multiple new lines" }
 
 let instruction :=
-  | declaration = declaration; { Declaration(declaration) }  
-  | expr = expr; { Expression(expr) }          
+  | declaration = declaration; { 
+      debug "Parsed: instruction declaration";
+      Declaration(declaration) 
+    }  
+  | DEF; i = IDENT; LPAREN; RPAREN; EQUALS; body = body; { 
+      debug ("Parsed: function definition with identifier " ^ i);
+      FunctionDef(i, [], body)
+    }
 
 let declaration :=
-  | LOCALITY; i = IDENT; { LocalityDecl(Locality(i)) }  
-  | NAME; i = IDENT; COLON; NONCE; AT; lis = localities; { NameDecl(Name(i, Nonce, lis))}
+  | NAME; i = IDENT; { 
+      debug ("Parsed: declaration with name " ^ i);
+      Name(i) 
+    }
 
-let localities := 
-  | li = IDENT; { [Locality(li)] }
-  | li = IDENT; COMMA; lis = localities; { Locality(li) :: lis }
+let body :=
+  | new_lines; expr = expr; rob = body; { 
+      debug "Parsed: body with expression";
+      expr :: rob 
+    }
+  | EOF; { 
+      debug "Parsed: empty body";
+      [] 
+    }     
 
-let expr :=
-  | terminal = terminal; { terminal }                    
-
-let terminal :=
-  | i = IDENT; { Variable(i) }              
+let expr := 
+  | INPUT; i = IDENT; { 
+      debug ("Parsed: input expression with identifier " ^ i);
+      Input(i) 
+    }            

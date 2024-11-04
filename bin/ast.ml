@@ -8,7 +8,8 @@ type declaration =
 
 type aterm = 
   | Get of string
-  | Function of aterm list
+  | Function of string * aterm list
+  | RetVariable of string
 [@@deriving show { with_path = false }]
 
 type expr = 
@@ -24,11 +25,10 @@ type expr =
 type instruction = 
 | Expression of expr
 | Declaration of declaration
-| FunctionDef of string * string list * expr 
+| FunctionDef of string * string list * expr list
 
 [@@deriving show { with_path = false }]
 
 type program =
-| EmptyProgram
-| Instruction of instruction * program
+| Program of instruction list
 [@@deriving show { with_path = false }]

@@ -7,15 +7,11 @@ exception Invalid_name_type
 
 let whitespace = [%sedlex.regexp? Plus (' ' | '\t')]
 
-let colon = [%sedlex.regexp? ':']
-
 let comma = [%sedlex.regexp? ',']
 
 let name = [%sedlex.regexp? "name"]
 
 let nonce = [%sedlex.regexp? "nonce"]
-
-let at = [%sedlex.regexp? '@']
 
 let new_line = [%sedlex.regexp? '\n']
 
@@ -27,17 +23,24 @@ let ident = [%sedlex.regexp? lower_alpha, Star (lower_alpha | number | '_')]
 
 let int = [%sedlex.regexp? Plus number]
 
-let locality = [%sedlex.regexp? "locality"]
+let lparen =  [%sedlex.regexp? '(']
+let rparen =  [%sedlex.regexp? ')']
+let equals =  [%sedlex.regexp? '=']
+let def = [%sedlex.regexp? "def"]
+
+let input = [%sedlex.regexp? "input"]
 
 
 let rec tokenizer buf =
   match%sedlex buf with
   | whitespace -> tokenizer buf
   | new_line -> NEW_LINE
-  | locality -> LOCALITY
-  | colon -> COLON
+  | def -> DEF
+  | lparen -> LPAREN
+  | rparen -> RPAREN
+  | equals -> EQUALS
+  | input -> INPUT
   | comma -> COMMA
-  | at -> AT
   | name -> NAME
   | nonce -> NONCE
   | ident -> IDENT (lexeme buf)

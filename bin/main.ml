@@ -16,6 +16,6 @@ let read_whole_file filename =
   close_in ch;
   s
 
-let code = read_whole_file "/Users/henrybarthelemy/eagle/bin/owlcode/example1.owl"
+let code = read_whole_file "/Users/henrybarthelemy/eagle/bin/owlcode/example1.eagle"
 
 let () = print_expr code
