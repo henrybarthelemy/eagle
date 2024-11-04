@@ -1,9 +1,10 @@
 %{
   open Ast
-  let debug msg = () (* print_endline msg *)
+  let debug msg = print_endline msg (* print_endline msg *)
 %}
 
 %token <string> IDENT
+%token <string> TYIDENT
 %token NAME
 %token COMMA
 %token NONCE
@@ -20,9 +21,13 @@
 %token DEC
 %token ENC
 %token LET
-
+%token MATCH
+%token IMPLIES
+%token MID_BAR
 
 %token EOF
+
+
 %start <Ast.program> program
 
 %%
@@ -49,7 +54,7 @@ let instruction :=
     }  
   | DEF; i = IDENT; LPAREN; RPAREN; EQUALS; body = body; { 
       debug ("Parsed: function definition with identifier " ^ i);
-      FunctionDef(i, [], body)
+      FunctionDef(i, [], body) (* TODO: Add parameter support *)
     }
 
 let declaration :=
@@ -93,6 +98,34 @@ let expr :=
       debug ("Parsed: let with identity " ^ i);
       Let(i, eq_expr, body)
   }
+  | MATCH; a = aterm; new_lines; cases = cases; { Match (a, cases)}
+
+let cases := 
+  | case = case; NEW_LINE; roc = cases; { case :: roc }
+  | case = case; { [case] }
+
+let case := 
+  | MID_BAR; l_typ = l_typ; IMPLIES; expr = expr; { (l_typ, expr) }
+
+let l_typ :=
+  | lty = TYIDENT; { 
+    debug ("Parsed l_typ with no params and identifier " ^ lty);
+    EnumType(lty, None) 
+    }
+  | i = TYIDENT; eparms = parms; { 
+    debug ("Parsed l_typ with params and identifier " ^ i);
+    EnumType(i, Some eparms)
+    }
+
+let parms := 
+  | i = IDENT; { 
+    debug ("Parsed single param with " ^ i);
+    [i] 
+    }
+  | i = IDENT; rop = parms; { 
+    debug ("Parsed multiple params with current of " ^ i);
+    i :: rop 
+    }
 
 let aterm := 
   | GET; LPAREN; n = IDENT; RPAREN; { 

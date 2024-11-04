@@ -7,3 +7,6 @@ def alice_main () =
     output ret(c)
     input i in
     let res = dec(get(k_data), i) in 
+    match res
+    | Something a => ret(res)
+    | Nothing => ret(other_res)
