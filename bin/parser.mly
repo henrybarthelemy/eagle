@@ -64,27 +64,27 @@ let declaration :=
     }
 
 let body :=
-  | new_lines; expr = expr; rob = body; { 
+  | new_lines; expr = expr; { 
       debug "Parsed: body with expression";
-      expr :: rob 
-    }
-  | EOF; { 
-      debug "Parsed: empty body";
-      [] 
-    }     
+      expr
+    }   
 
 let expr := 
-  | INPUT; i = IDENT; IN; body = body; { 
+  | INPUT; i = IDENT; IN; expr = expr; { 
       debug ("Parsed: input expression with identifier " ^ i);
-      Input(i, body) 
+      Input(i, expr) 
     }
   | RET; LPAREN; aterm = aterm; RPAREN; {
     debug ("Parsed: retreieve expression");
     Ret(aterm)
     }      
+  | OUTPUT; expr = expr; expr2 = expr; { 
+    debug ("Parsed: output expression");
+    Output(expr, Some expr) 
+    }
   | OUTPUT; expr = expr; { 
     debug ("Parsed: output expression");
-    Output(expr) 
+    Output(expr, None) 
     }
   | ENC; LPAREN; aterm1 = aterm; COMMA; aterm2 = aterm; RPAREN; {
     debug ("Parsed: encryption with two aterms");
@@ -94,9 +94,9 @@ let expr :=
     debug ("Parsed: encryption with two aterms");
     Dec(aterm1, aterm2)
     }
-  | LET; i = IDENT; EQUALS; eq_expr = expr; IN; body = body; {
+  | LET; i = IDENT; EQUALS; eq_expr = expr; IN; expr = expr; {
       debug ("Parsed: let with identity " ^ i);
-      Let(i, eq_expr, body)
+      Let(i, eq_expr, expr)
   }
   | MATCH; a = aterm; new_lines; cases = cases; { Match (a, cases)}
 
