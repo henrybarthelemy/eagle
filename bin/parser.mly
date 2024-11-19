@@ -1,6 +1,6 @@
 %{
   open Ast
-  let debug msg = print_endline msg (* print_endline msg *)
+  let debug msg = print_endline msg 
 %}
 
 %token <string> IDENT
@@ -24,7 +24,6 @@
 %token MATCH
 %token IMPLIES
 %token MID_BAR
-
 %token EOF
 
 
@@ -39,22 +38,27 @@ let program :=
   } 
 
 let instructions := 
-  | instruction = instruction; new_lines; roi = instructions; { instruction:: roi }
+  | instruction = instruction; newline1; roi = instructions; { instruction:: roi }
   | instruction = instruction; EOF; { [instruction] }
   | EOF; { [] }
 
-let new_lines := 
-  | NEW_LINE; { debug "Parsed: new line" }
-  | NEW_LINE; new_lines; { debug "Parsed: multiple new lines" }
+
+let newline1 :=
+  | NEW_LINE; { debug "Parsed: single newline1" }
+  | NEW_LINE; newline1; { debug "Parsed: newline1" }
+
+let newline0 :=
+  | { debug "Parsed: newline0 base" }
+  | NEW_LINE; newline0; { debug "Parsed: newline0" }
 
 let instruction :=
   | declaration = declaration; { 
       debug "Parsed: instruction declaration";
       Declaration(declaration) 
     }  
-  | DEF; i = IDENT; LPAREN; RPAREN; EQUALS; body = body; { 
+  | DEF; i = IDENT; LPAREN; RPAREN; EQUALS; newline1; expr = expr; { 
       debug ("Parsed: function definition with identifier " ^ i);
-      FunctionDef(i, [], body) (* TODO: Add parameter support *)
+      FunctionDef(i, [], expr) (* TODO: Add parameter support *)
     }
 
 let declaration :=
@@ -63,29 +67,11 @@ let declaration :=
       Name(i) 
     }
 
-let body :=
-  | new_lines; expr = expr; rob = body; { 
-      debug "Parsed: body with expression";
-      expr :: rob 
-    }
-  | EOF; { 
-      debug "Parsed: empty body";
-      [] 
-    }     
-
-let expr := 
-  | INPUT; i = IDENT; IN; body = body; { 
-      debug ("Parsed: input expression with identifier " ^ i);
-      Input(i, body) 
-    }
+let terminal_expr := 
   | RET; LPAREN; aterm = aterm; RPAREN; {
     debug ("Parsed: retreieve expression");
     Ret(aterm)
-    }      
-  | OUTPUT; expr = expr; { 
-    debug ("Parsed: output expression");
-    Output(expr) 
-    }
+    }     
   | ENC; LPAREN; aterm1 = aterm; COMMA; aterm2 = aterm; RPAREN; {
     debug ("Parsed: encryption with two aterms");
     Enc(aterm1, aterm2)
@@ -94,11 +80,26 @@ let expr :=
     debug ("Parsed: encryption with two aterms");
     Dec(aterm1, aterm2)
     }
-  | LET; i = IDENT; EQUALS; eq_expr = expr; IN; body = body; {
-      debug ("Parsed: let with identity " ^ i);
-      Let(i, eq_expr, body)
+
+let expr := 
+  | INPUT; i = IDENT; IN; newline0; expr = expr; { 
+      debug ("Parsed: input expression with identifier " ^ i);
+      Input(i, expr) 
   }
-  | MATCH; a = aterm; new_lines; cases = cases; { Match (a, cases)}
+  | terminal_expr
+  | OUTPUT; expr = expr; { 
+    debug ("Parsed: output expression");
+    Output(expr, None) 
+    }
+  | OUTPUT; expr = expr; newline0; expr2 = expr; { 
+    debug ("Parsed: output expression with continuation");
+    Output(expr, Some expr2) 
+    }
+  | LET; i = IDENT; EQUALS; eq_expr = expr; IN; newline0; expr = expr; {
+      debug ("Parsed: let with identity " ^ i);
+      Let(i, eq_expr, expr)
+  }
+  | MATCH; a = aterm; newline0; cases = cases; { Match (a, cases)}
 
 let cases := 
   | case = case; NEW_LINE; roc = cases; { case :: roc }
