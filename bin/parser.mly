@@ -24,6 +24,7 @@
 %token MATCH
 %token IMPLIES
 %token MID_BAR
+%token END
 %token EOF
 
 
@@ -56,7 +57,7 @@ let instruction :=
       debug "Parsed: instruction declaration";
       Declaration(declaration) 
     }  
-  | DEF; i = IDENT; LPAREN; RPAREN; EQUALS; newline1; expr = expr; { 
+  | DEF; i = IDENT; LPAREN; RPAREN; EQUALS; newline1; expr = expr; newline0; END; DEF; { 
       debug ("Parsed: function definition with identifier " ^ i);
       FunctionDef(i, [], expr) (* TODO: Add parameter support *)
     }
@@ -91,7 +92,7 @@ let expr :=
     debug ("Parsed: output expression");
     Output(expr, None) 
     }
-  | OUTPUT; expr = expr; newline0; expr2 = expr; { 
+  | OUTPUT; expr = expr; IN; newline0; expr2 = expr; { 
     debug ("Parsed: output expression with continuation");
     Output(expr, Some expr2) 
     }
@@ -99,10 +100,10 @@ let expr :=
       debug ("Parsed: let with identity " ^ i);
       Let(i, eq_expr, expr)
   }
-  | MATCH; a = aterm; newline0; cases = cases; { Match (a, cases)}
+  | MATCH; a = aterm; newline0; cases = cases; { Match (a, cases) }
 
 let cases := 
-  | case = case; NEW_LINE; roc = cases; { case :: roc }
+  | case = case; COMMA; NEW_LINE; roc = cases; { case :: roc }
   | case = case; { [case] }
 
 let case := 

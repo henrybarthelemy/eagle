@@ -30,6 +30,7 @@ let output = [%sedlex.regexp? "output"]
 let dec = [%sedlex.regexp? "dec"]
 let enc = [%sedlex.regexp? "enc"]
 let let_regex = [%sedlex.regexp? "let"]
+let end_regex = [%sedlex.regexp? "end"]
 
 let match_reg = [%sedlex.regexp? "match"]
 let implies = [%sedlex.regexp? "=>"]
@@ -38,6 +39,7 @@ let mid_bar = [%sedlex.regexp? "|"]
 let rec tokenizer buf =
   match%sedlex buf with
   | whitespace -> tokenizer buf
+  | end_regex -> END
   | new_line -> NEW_LINE
   | def -> DEF
   | match_reg -> MATCH
