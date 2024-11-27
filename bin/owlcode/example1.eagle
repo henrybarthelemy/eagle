@@ -7,16 +7,12 @@ def alice_main () =
     output ret(c) in
     input i in
     let res = dec(get(k_data), i) in 
-    match res
-    | Something a => ret(res),
-    | Nothing => ret(unit) 
+    ret(res)
 end def
 
 def bob_main () =
     input i in 
     let res = dec(get(psk), i) in
-    match res
-     | Some k => let c = enc(k, get(x)) in 
-     output ret(c),
-     | None => ret(unit)
+    let c = enc(k, get(x)) in 
+    output ret(c)
 end def
