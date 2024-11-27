@@ -1,4 +1,3 @@
-
 type declaration =
   | Name of string
 [@@deriving show { with_path = false }]

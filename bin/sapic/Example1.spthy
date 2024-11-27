@@ -1,0 +1,9 @@
+theory ExampleOwl
+begin
+
+process:
+!(
+	(  new x; new k_data; new psk; 0 )
+)
+
+end
