@@ -13,6 +13,6 @@ end def
 def bob_main () =
     input i in 
     let res = dec(get(psk), i) in
-    let c = enc(k, get(x)) in 
+    let c = enc(i, get(res)) in 
     output ret(c)
 end def

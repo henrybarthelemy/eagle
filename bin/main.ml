@@ -1,6 +1,5 @@
 open Parser
 open Lexer
-open Ast
 open Translator
 
 (* Function to parse a program string *)

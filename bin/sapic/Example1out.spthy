@@ -4,10 +4,17 @@ begin
 builtins: symmetric-encryption
 
 process:
-!(new x;
-	|| new k_data;
-	|| new psk;
-	|| (alice_main() { let c = senc(psk, k_data) in out(Ret(c)); in(i, let res = sdec(k_data, i) in Ret(res)) })
-	|| (bob_main() { in(i, let res = sdec(psk, i) in let c = senc(k, x) in out(Ret(c))) }))
+!(new x; new k_data; new psk; || 
+ (let c = senc(psk, k_data) 
+ in out(c); 
+ in(i, let res = sdec(k_data, i) 
+ in res) 
+) 
+|| 
+ (in(i, let res = sdec(psk, i) 
+ in let c = senc(i, res) 
+ in out(c)) 
+) 
+)
 
 end@!
