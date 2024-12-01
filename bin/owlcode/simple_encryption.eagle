@@ -1,0 +1,7 @@
+name k
+
+def alice_main () = 
+    input m in
+    let c = enc(get(k), m) in
+    output ret(c)
+end def

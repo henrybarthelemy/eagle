@@ -1,0 +1,12 @@
+theory ExampleOwl
+begin
+
+builtins: symmetric-encryption
+
+process:
+!(new k; (in(m); 
+ let c = senc(k, m) in out(c) 
+) 
+)
+
+end

@@ -39,8 +39,8 @@ let write_to_file filename content =
     raise e
 
 let () =
-  let file_in_name = "/Users/henrybarthelemy/eagle/bin/owlcode/example1.eagle" in
-  let file_out_name = "/Users/henrybarthelemy/eagle/bin/sapic/Example1out.spthy" in
+  let file_in_name = "/Users/henrybarthelemy/eagle/bin/owlcode/simple.eagle" in
+  let file_out_name = "/Users/henrybarthelemy/eagle/bin/sapic/SimpleOut.spthy" in
   print_program file_in_name;
   write_to_file file_out_name (program_to_string file_in_name);
   
