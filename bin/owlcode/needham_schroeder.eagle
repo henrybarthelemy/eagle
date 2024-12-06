@@ -25,20 +25,4 @@ def alice_main () =
     output ret(nb_sk)
 end def
 
-def bob_main () = 
-    input sk_kb in
-    let sk = dec(get(k_b), sk_kb) in
-    let nb_sk = enc(sk, get(n_b)) in
-    output ret(k_b) in
-    input nb_pred_sk in
-    let nb_pred = dec(sk, kb_prime) in
-    output ret(nb_pred)
-end def
-
-
-def server_main () = 
-    input n_a in
-    let c = enc(get(k), m) in
-    output ret(c)
-end def
 

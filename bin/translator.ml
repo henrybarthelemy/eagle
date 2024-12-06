@@ -45,30 +45,40 @@ let pretty_program fmt (Program instrs) =
 
 (**** *)
 
-let rec pretty_instruction fmt instr prev_instr =
+let rec pretty_instruction fmt instr in_function_group =
   match instr with
-  | Declaration decl -> Format.fprintf fmt "%a " pretty_declaration decl
-  | Expression expr -> Format.fprintf fmt "|| \n (%a) \n" pretty_expr expr
+  | Declaration decl -> 
+      if in_function_group then Format.fprintf fmt "))\n"; (* Close group if needed *)
+      Format.fprintf fmt "%a " pretty_declaration decl;
+      false (* Not in a function group anymore *)
+  | Expression expr -> 
+      if in_function_group then Format.fprintf fmt "))\n"; (* Close group if needed *)
+      Format.fprintf fmt "|| \n (%a) \n" pretty_expr expr;
+      false (* Not in a function group anymore *)
   | FunctionDef (name, params, body) ->
-      (match prev_instr with
-       | Some (FunctionDef _) ->
-           (* Special formatting when a FunctionDef follows another FunctionDef *)
-           Format.fprintf fmt "|| (%a) \n" pretty_expr body
-       | _ ->
-           Format.fprintf fmt "(%a) \n" pretty_expr body)
+      if not in_function_group then
+        Format.fprintf fmt "((\n" (* Start group if not already in one *)
+      else
+        Format.fprintf fmt "||\n"; (* Add separator between functions in a group *)
+      Format.fprintf fmt "(%a)\n" pretty_expr body;
+      true (* Remain in a function group *)
 
 let pretty_program fmt (Program instrs) =
   Format.fprintf fmt "theory ExampleOwl\nbegin\n\n"; 
   Format.fprintf fmt "builtins: symmetric-encryption\n\nprocess:\n!(";
 
-  (* Use a fold to keep track of the previous instruction while iterating *)
-  let _ =
+  (* Use a fold to track function grouping state *)
+  let in_function_group =
     List.fold_left
-      (fun prev_instr instr ->
-         pretty_instruction fmt instr prev_instr;
-         Some instr) (* Update the previous instruction *)
-      None (* Initial previous instruction *)
+      (fun in_function_group instr ->
+         pretty_instruction fmt instr in_function_group)
+      false (* Initial state: not in a function group *)
       instrs
   in
 
+  (* Close any remaining open function group at the end *)
+  if in_function_group then Format.fprintf fmt "))\n";
+
   Format.fprintf fmt ")\n\nend"
+
+

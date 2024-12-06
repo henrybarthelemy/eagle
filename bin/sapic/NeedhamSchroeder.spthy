@@ -5,26 +5,17 @@ builtins: symmetric-encryption
 functions: pred/1
 
 process:
-!(new k_a; new k_b; new n_a; new n_b; new na_ka; new nb_sk; new b_ka; new sk_ka; new sk_kb_ka; 
-    
-((out(n_a); 
+!(new k_a; new k_b; new n_a; new n_b; ((
+(out(n_a); 
  in(na_ka); 
  in(b_ka); 
  in(sk_ka); 
  in(sk_kb_ka); 
  let sk_kb = sdec(k_a, sk_kb_ka) in let sk = sdec(k_a, sk_ka) in let na = sdec(k_a, na_ka) in let b = sdec(k_a, b_ka) in out(sk_kb); 
  in(nb_sk); 
- let nb = sdec(sk, nb_sk) in let nb_sk = senc(sk, pred(n_b)) in out(nb_sk) 
-) 
-|| (
-
- in(sk_kb); 
- let sk = sdec(k_b, sk_kb) in 
- let nb_sk = senc(sk, n_b) in 
- out(k_b); 
- in(nb_pred_sk); 
- let nb_pred = sdec(sk, nb_pred_sk) in out(nb_pred) 
-) )
+ let nb = sdec(sk, nb_sk) in let nb_pred = senc(sk, pred(nb)) in out(nb_pred) 
+)
+))
 )
 
 end@!
