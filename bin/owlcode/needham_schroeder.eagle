@@ -2,11 +2,6 @@ name k_a
 name k_b
 name n_a
 name n_b
-name na_ka
-name nb_sk
-name b_ka
-name sk_ka
-name sk_kb_ka
 
 def alice_main () = 
     output ret(n_a) in
@@ -21,8 +16,18 @@ def alice_main () =
     output ret(sk_kb) in
     input nb_sk in
     let nb = dec(sk, nb_sk) in
-    let nb_sk = enc(sk, nb_pred) in
-    output ret(nb_sk)
+    let nb_pred = enc(sk, replacemewithprednp) in
+    output ret(nb_pred)
+end def
+
+def bob_main () = 
+    input sk_kb in
+    let sk = dec(get(k_b), sk_kb) in
+    let nb_sk = enc(sk, get(n_b)) in
+    output ret(nb_sk) in
+    input nb_prime_sk in
+    let nb_pred = dec(sk, nb_prime_sk) in
+    output ret(nb_pred)
 end def
 
 

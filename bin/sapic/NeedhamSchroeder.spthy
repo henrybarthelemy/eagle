@@ -15,6 +15,14 @@ process:
  in(nb_sk); 
  let nb = sdec(sk, nb_sk) in let nb_pred = senc(sk, pred(nb)) in out(nb_pred) 
 )
+||
+(in(sk_kb); 
+ let sk = sdec(k_b, sk_kb) in let nb_sk = senc(sk, n_b) in out(nb_sk); 
+ in(nb_prime_sk); 
+ let nb_pred = sdec(sk, nb_prime_sk) in out(nb_pred) 
+ 
+ 
+)
 ))
 )
 
