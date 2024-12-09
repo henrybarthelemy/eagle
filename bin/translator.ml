@@ -65,7 +65,7 @@ let rec pretty_instruction fmt instr in_function_group =
 
 let pretty_program fmt (Program instrs) =
   Format.fprintf fmt "theory ExampleOwl\nbegin\n\n"; 
-  Format.fprintf fmt "builtins: symmetric-encryption\n\nprocess:\n!(";
+  Format.fprintf fmt "builtins: symmetric-encryption\nfunctions: pred/1\n\nprocess:\n!(";
 
   (* Use a fold to track function grouping state *)
   let in_function_group =

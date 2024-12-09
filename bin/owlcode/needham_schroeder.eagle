@@ -16,7 +16,7 @@ def alice_main () =
     output ret(sk_kb) in
     input nb_sk in
     let nb = dec(sk, nb_sk) in
-    let nb_pred = enc(sk, replacemewithprednp) in
+    let nb_pred = enc(sk, pred(np)) in
     output ret(nb_pred)
 end def
 

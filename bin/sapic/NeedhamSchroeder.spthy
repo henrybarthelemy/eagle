@@ -13,13 +13,18 @@ process:
  in(sk_kb_ka); 
  let sk_kb = sdec(k_a, sk_kb_ka) in let sk = sdec(k_a, sk_ka) in let na = sdec(k_a, na_ka) in let b = sdec(k_a, b_ka) in out(sk_kb); 
  in(nb_sk); 
- let nb = sdec(sk, nb_sk) in let nb_pred = senc(sk, pred(nb)) in out(nb_pred) 
+ let nb = sdec(sk, nb_sk) in let nb_pred = senc(sk, pred(np)) in out(nb_pred) 
+ 
+ 
+ 
+ 
+ 
 )
 ||
 (in(sk_kb); 
  let sk = sdec(k_b, sk_kb) in let nb_sk = senc(sk, n_b) in out(nb_sk); 
  in(nb_prime_sk); 
- let nb_pred = sdec(sk, nb_prime_sk) in out(nb_pred) 
+ let nb_pred = sdec(sk, nb_prime_sk) in out(nb_prime_sk) 
  
  
 )

@@ -134,7 +134,16 @@ let aterm :=
     debug ("Parsed a get with name " ^ n);
     Get(n) 
     }
+  | fname = IDENT; LPAREN; n = atermlist; RPAREN; {
+    debug ("Parsed a function with indent");
+    Function(fname, n)
+  }
   | i = IDENT; { 
     debug ("Parsed a retrieve with param " ^ i);
     RetVariable(i) 
     }     
+
+let atermlist :=
+   | a = aterm; {
+    [a]
+   }
