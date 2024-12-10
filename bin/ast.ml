@@ -1,5 +1,6 @@
 type declaration =
   | Name of string
+  | SecretName of string
 [@@deriving show { with_path = false }]
 
 type aterm = 

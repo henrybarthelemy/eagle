@@ -24,6 +24,7 @@ let rec pretty_expr fmt expr =
 let pretty_declaration fmt decl =
   match decl with
   | Name name -> Format.fprintf fmt "new %s;" name
+  | SecretName name -> Format.fprintf fmt "new %s; " name
 
 let rec pretty_instruction fmt instr =
   match instr with

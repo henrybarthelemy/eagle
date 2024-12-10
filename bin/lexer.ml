@@ -31,6 +31,7 @@ let dec = [%sedlex.regexp? "dec"]
 let enc = [%sedlex.regexp? "enc"]
 let let_regex = [%sedlex.regexp? "let"]
 let end_regex = [%sedlex.regexp? "end"]
+let secret_name = [%sedlex.regexp? "secretname"]
 
 let match_reg = [%sedlex.regexp? "match"]
 let implies = [%sedlex.regexp? "=>"]
@@ -51,6 +52,7 @@ let rec tokenizer buf =
   | input -> INPUT
   | let_regex -> LET
   | comma -> COMMA
+  | secret_name -> SECRET_NAME
   | name -> NAME
   | in_regex -> IN
   | ret -> RET

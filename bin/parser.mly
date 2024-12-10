@@ -5,6 +5,7 @@
 
 %token <string> IDENT
 %token <string> TYIDENT
+%token SECRET_NAME
 %token NAME
 %token COMMA
 %token NONCE
@@ -67,6 +68,10 @@ let declaration :=
       debug ("Parsed: declaration with name " ^ i);
       Name(i) 
     }
+  | SECRET_NAME; i = IDENT; {
+    debug("Parsed: declaration of a secret name " ^ i);
+    SecretName(i)
+  }
 
 let terminal_expr := 
   | RET; LPAREN; aterm = aterm; RPAREN; {
@@ -146,4 +151,7 @@ let aterm :=
 let atermlist :=
    | a = aterm; {
     [a]
+   }
+   | a = aterm; COMMA; roa = atermlist; {
+    a :: roa
    }
