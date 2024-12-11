@@ -1,4 +1,4 @@
-name k
+secretname k
 
 def alice_main () = 
     input m in

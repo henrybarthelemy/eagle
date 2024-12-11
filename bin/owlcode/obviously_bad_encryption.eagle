@@ -1,7 +1,7 @@
-name k
+secretname k
 
 def alice_main () = 
     input m in
     let c = enc(get(k), m) in
-    output ret(c)
+    output ret(k)
 end def

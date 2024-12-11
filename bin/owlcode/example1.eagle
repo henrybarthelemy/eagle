@@ -1,6 +1,6 @@
 name x
-name k_data 
-name psk
+secretname k_data 
+secretname psk
 
 def alice_main () =     
     let c = enc(get(psk), get(k_data)) in

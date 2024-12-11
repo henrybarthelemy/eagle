@@ -39,15 +39,14 @@ let write_to_file filename content =
     raise e
 
 (* WIP Needham-Schroeder *)
-let () =
+(* let () =
   let file_in_name = "/Users/henrybarthelemy/eagle/bin/owlcode/needham_schroeder.eagle" in
   let file_out_name = "/Users/henrybarthelemy/eagle/bin/sapic/NeedhamSchroeder.spthy" in
   print_program file_in_name;
-  write_to_file file_out_name (program_to_string file_in_name);
+  write_to_file file_out_name (program_to_string file_in_name); *)
 
-(* Uncomment to test conversion
 let () =
-  let fin = "/Users/henrybarthelemy/eagle/bin/owlcode/simple_encryption.eagle" in
-  let fon = "/Users/henrybarthelemy/eagle/bin/sapic/SimpleEncryption.spthy" in
+  let fin = "/Users/henrybarthelemy/eagle/bin/owlcode/example1.eagle" in
+  let fon = "/Users/henrybarthelemy/eagle/bin/sapic/Example1.spthy" in
   print_program fin;
-  write_to_file fon (program_to_string fin); *)
+  write_to_file fon (program_to_string fin); 

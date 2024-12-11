@@ -1,0 +1,17 @@
+theory ExampleOwl
+begin
+
+builtins: symmetric-encryption
+functions: pred/1
+
+process:
+!(new k; event Secret(k);  ((
+(in(m); 
+ let c = senc(k, m) in out(k) 
+)
+)))
+
+lemma secrecy:
+  "All x #i.
+    Secret(x) @i ==> not (Ex #j. K(x)@j)"
+end@!

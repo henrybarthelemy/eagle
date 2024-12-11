@@ -24,7 +24,7 @@ let rec pretty_expr fmt expr =
 let pretty_declaration fmt decl =
   match decl with
   | Name name -> Format.fprintf fmt "new %s;" name
-  | SecretName name -> Format.fprintf fmt "new %s; " name
+  | SecretName name -> Format.fprintf fmt "new %s; event Secret(%s); " name name
 
 let rec pretty_instruction fmt instr =
   match instr with
@@ -42,9 +42,6 @@ let pretty_program fmt (Program instrs) =
     pretty_instruction fmt instrs;
   Format.fprintf fmt ")\n\nend"
 
-
-
-(**** *)
 
 let rec pretty_instruction fmt instr in_function_group =
   match instr with
@@ -64,6 +61,11 @@ let rec pretty_instruction fmt instr in_function_group =
       Format.fprintf fmt "(%a)\n" pretty_expr body;
       true (* Remain in a function group *)
 
+let rec contains_secret_name instrs =
+  List.exists (function
+    | Declaration (SecretName _) -> true
+    | _ -> false) instrs
+
 let pretty_program fmt (Program instrs) =
   Format.fprintf fmt "theory ExampleOwl\nbegin\n\n"; 
   Format.fprintf fmt "builtins: symmetric-encryption\nfunctions: pred/1\n\nprocess:\n!(";
@@ -78,8 +80,14 @@ let pretty_program fmt (Program instrs) =
   in
 
   (* Close any remaining open function group at the end *)
-  if in_function_group then Format.fprintf fmt "))\n";
+  if in_function_group then Format.fprintf fmt "))";
+  
+  Format.fprintf fmt ")\n\n";
 
-  Format.fprintf fmt ")\n\nend"
+  if (contains_secret_name instrs) then Format.fprintf fmt "lemma secrecy:
+  \"All x #i.
+    Secret(x) @i ==> not (Ex #j. K(x)@j)\"\n";
+
+  Format.fprintf fmt "end";
 
 
