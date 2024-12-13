@@ -1,0 +1,42 @@
+theory ExampleOwl
+begin
+
+builtins: symmetric-encryption
+functions: pred/1
+
+process:
+!(new k_a; event Secret(k_a);  new k_b; event Secret(k_b);  new sk; event Secret(sk);  new n_a; new n_b; ((
+(out(n_a); 
+ in(na_ka); 
+ in(b_ka); 
+ in(sk_ka); 
+ in(sk_kb_ka); 
+ let sk_kb = sdec(k_a, sk_kb_ka) in let sk_a = sdec(k_a, sk_ka) in let na = sdec(k_a, na_ka) in let b = sdec(k_a, b_ka) in out(sk_kb); 
+ in(nb_sk); 
+ let nb = sdec(sk_a, nb_sk) in let nb_pred = senc(sk_a, pred(nb)) in out(nb_pred) 
+ 
+ 
+ 
+ 
+ 
+)
+||
+(in(sk_kb); 
+ let sk_b = sdec(k_b, sk_kb) in let nb_sk = senc(sk_b, n_b) in out(nb_sk); 
+ in(nb_prime_sk); 
+ let nb_pred = sdec(sk_b, nb_prime_sk) in out(nb_pred) 
+ 
+ 
+)
+||
+(let sk_ka = senc(k_a, sk) in out(sk_ka); 
+ let sk_kb = senc(k_b, sk) in let sk_kb_ka = senc(k_a, sk) in out(sk_kb_ka) 
+ 
+ 
+)
+)))
+
+lemma secrecy:
+  "All x #i.
+    Secret(x) @i ==> not (Ex #j. K(x)@j)"
+end@!

@@ -1,5 +1,6 @@
 secretname k_a
 secretname k_b
+secretname sk
 name n_a
 name n_b
 
@@ -10,24 +11,31 @@ def alice_main () =
     input sk_ka in
     input sk_kb_ka in
     let sk_kb = dec(get(k_a), sk_kb_ka) in
-    let sk = dec(get(k_a), sk_ka) in
+    let sk_a = dec(get(k_a), sk_ka) in
     let na = dec(get(k_a), na_ka) in
     let b = dec(get(k_a), b_ka) in
     output ret(sk_kb) in
     input nb_sk in
-    let nb = dec(sk, nb_sk) in
-    let nb_pred = enc(sk, pred(nb)) in
+    let nb = dec(sk_a, nb_sk) in
+    let nb_pred = enc(sk_a, pred(nb)) in
     output ret(nb_pred)
 end def
 
 def bob_main () = 
     input sk_kb in
-    let sk = dec(get(k_b), sk_kb) in
-    let nb_sk = enc(sk, get(n_b)) in
+    let sk_b = dec(get(k_b), sk_kb) in
+    let nb_sk = enc(sk_b, get(n_b)) in
     output ret(nb_sk) in
     input nb_prime_sk in
-    let nb_pred = dec(sk, nb_prime_sk) in
+    let nb_pred = dec(sk_b, nb_prime_sk) in
     output ret(nb_pred)
 end def
 
 
+def server_main () = 
+    let sk_ka = enc(get(k_a), get(sk)) in
+    output ret(sk_ka) in
+    let sk_kb = enc(get(k_b), get(sk)) in
+    let sk_kb_ka = enc(get(k_a), get(sk)) in
+    output ret(sk_kb_ka)
+end def

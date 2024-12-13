@@ -28,7 +28,6 @@
 %token END
 %token EOF
 
-
 %start <Ast.program> program
 
 %%
@@ -86,6 +85,7 @@ let terminal_expr :=
     debug ("Parsed: encryption with two aterms");
     Dec(aterm1, aterm2)
     }
+  
 
 let expr := 
   | INPUT; i = IDENT; IN; newline0; expr = expr; { 

@@ -7,7 +7,7 @@ functions: pred/1
 process:
 !(new k; event Secret(k);  ((
 (in(m); 
- let c = senc(k, m) in out(k) 
+ let c = senc(k, m) in out(c) 
 )
 )))
 
