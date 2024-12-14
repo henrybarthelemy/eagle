@@ -7,7 +7,7 @@ def alice_main () =
     output ret(c) in
     input i in
     let res = dec(get(k_data), i) in 
-    ret(res)
+    output ret(i)
 end def
 
 def bob_main () =
@@ -16,3 +16,4 @@ def bob_main () =
     let c = enc(i, get(res)) in 
     output ret(c)
 end def
+
