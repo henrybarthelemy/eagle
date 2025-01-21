@@ -26,24 +26,7 @@ let pretty_declaration fmt decl =
   | Name name -> Format.fprintf fmt "new %s;" name
   | SecretName name -> Format.fprintf fmt "new %s; event Secret(%s); " name name
 
-let rec pretty_instruction fmt instr =
-  match instr with
-  | Declaration decl -> Format.fprintf fmt "%a " pretty_declaration decl
-  | Expression expr -> Format.fprintf fmt "|| \n (%a) \n" pretty_expr expr
-  | FunctionDef (name, params, body) ->
-      Format.fprintf fmt "|| \n (%a) \n" pretty_expr body
-
-
-(* Hard coded for now; TODO: Add input in the syntax to take this information in *)
-let pretty_program fmt (Program instrs) =
-  Format.fprintf fmt "theory ExampleOwl\nbegin\n\n"; 
-  Format.fprintf fmt "builtins: symmetric-encryption\n\nprocess:\n!(";
-  Format.pp_print_list ~pp_sep:(fun fmt () -> Format.fprintf fmt "")
-    pretty_instruction fmt instrs;
-  Format.fprintf fmt ")\n\nend"
-
-
-let rec pretty_instruction fmt instr in_function_group =
+let pretty_instruction fmt instr in_function_group =
   match instr with
   | Declaration decl -> 
       if in_function_group then Format.fprintf fmt "))\n"; (* Close group if needed *)
@@ -53,7 +36,7 @@ let rec pretty_instruction fmt instr in_function_group =
       if in_function_group then Format.fprintf fmt "))\n"; (* Close group if needed *)
       Format.fprintf fmt "|| \n (%a) \n" pretty_expr expr;
       false (* Not in a function group anymore *)
-  | FunctionDef (name, params, body) ->
+  | FunctionDef (_, _, body) ->
       if not in_function_group then
         Format.fprintf fmt "((\n" (* Start group if not already in one *)
       else
@@ -61,7 +44,7 @@ let rec pretty_instruction fmt instr in_function_group =
       Format.fprintf fmt "(%a)\n" pretty_expr body;
       true (* Remain in a function group *)
 
-let rec contains_secret_name instrs =
+let contains_secret_name instrs =
   List.exists (function
     | Declaration (SecretName _) -> true
     | _ -> false) instrs
@@ -69,7 +52,6 @@ let rec contains_secret_name instrs =
 let pretty_program fmt (Program instrs) =
   Format.fprintf fmt "theory ExampleOwl\nbegin\n\n"; 
   Format.fprintf fmt "builtins: symmetric-encryption\nfunctions: pred/1\n\nprocess:\n!(";
-
   (* Use a fold to track function grouping state *)
   let in_function_group =
     List.fold_left
@@ -78,7 +60,6 @@ let pretty_program fmt (Program instrs) =
       false (* Initial state: not in a function group *)
       instrs
   in
-
   (* Close any remaining open function group at the end *)
   if in_function_group then Format.fprintf fmt "))";
   
