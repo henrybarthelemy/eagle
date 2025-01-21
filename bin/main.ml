@@ -1,5 +1,3 @@
-open Parser
-open Lexer
 open Translator
 
 (* Function to parse a program string *)
@@ -46,7 +44,7 @@ let write_to_file filename content =
   write_to_file file_out_name (program_to_string file_in_name); *)
 
 let () =
-  let fin = "/Users/henrybarthelemy/eagle/bin/owlcode/example1.eagle" in
-  let fon = "/Users/henrybarthelemy/eagle/bin/sapic/example1.spthy" in
+  let fin = "/Users/henrybarthelemy/eagle/bin/owlcode/bin/owlcode/obviously_bad_encryption.eagle" in
+  let fon = "/Users/henrybarthelemy/eagle/bin/sapic/3.spthy" in
   print_program fin;
   write_to_file fon (program_to_string fin); 

@@ -1,6 +1,6 @@
 %{
   open Ast
-  let debug msg = () (* print_endline msg *) (* Uncomment to turn on debugging *)
+  let debug _ = () (* print_endline msg *) (* Uncomment to turn on debugging *)
 %}
 
 %token <string> IDENT

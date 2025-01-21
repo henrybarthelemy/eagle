@@ -1,6 +1,5 @@
 open Sedlexing.Utf8
 open Parser
-open Ast
 
 exception Invalid_token
 exception Invalid_name_type
