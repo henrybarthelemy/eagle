@@ -1,7 +1,1 @@
-secretname k
-
-def alice_main () = 
-    input m in
-    let c = enc(get(k), m) in
-    output ret(k)
-end def
+let xyz = output ret(c) in ret(c)
